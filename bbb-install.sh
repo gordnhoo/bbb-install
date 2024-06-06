@@ -583,7 +583,7 @@ check_version() {
   check_root
   need_pkg apt-transport-https
   if ! apt-key list | grep -q "BigBlueButton apt-get"; then
-    curl -fsSL "https://$PACKAGE_REPOSITORY/repo/bigbluebutton.asc" | tee /etc/apt/keyrings/bigbluebutton.asc
+    curl -fsSL "https://$PACKAGE_REPOSITORY/repo/bigbluebutton.asc" | sudo tee /etc/apt/keyrings/bigbluebutton.asc
   fi
 
   echo "deb [signed-by=/etc/apt/keyrings/bigbluebutton.asc] https://$PACKAGE_REPOSITORY/$VERSION bigbluebutton-$DISTRO main" > /etc/apt/sources.list.d/bigbluebutton.list
