@@ -581,7 +581,7 @@ check_version() {
     err "Unable to locate packages for $1 at $PACKAGE_REPOSITORY."
   fi
   check_root
-  need_pkg apt-transport-https
+  need_pkg curl apt-transport-https
   if ! apt-key list | grep -q "BigBlueButton apt-get"; then
     curl -fsSL "https://$PACKAGE_REPOSITORY/repo/bigbluebutton.asc" | sudo tee /etc/apt/keyrings/bigbluebutton.asc
   fi
