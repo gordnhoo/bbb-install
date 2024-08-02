@@ -290,7 +290,7 @@ main() {
     need_ppa bigbluebutton-ubuntu-support-focal.list ppa:bigbluebutton/support  2E1B01D0E95B94BC    # Needed for libopusenc0
     need_ppa martin-uni-mainz-ubuntu-coturn-focal.list ppa:martin-uni-mainz/coturn  4B77C2225D3BBDB3 # Coturn
 
-    if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 16 /etc/apt/sources.list.d/nodesource.list; then
+    if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
       # Node 16 might be installed, previously used in BigBlueButton
       # Remove the repository config. This will cause the repository to get
       # re-added using the current nodejs version, and nodejs will be upgraded.
@@ -299,18 +299,9 @@ main() {
     if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
       sudo mkdir -p /etc/apt/keyrings
       curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-      NODE_MAJOR=18
+      NODE_MAJOR=22
       echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
     fi
-
-   if [ ! -f /usr/share/keyrings/mongodb-server-6.0.gpg ]; then
-     curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
-     sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
-     --dearmor
-   fi
-
-   echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | \
-   sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
     # postgres for BigBlueButton core
     sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
@@ -319,7 +310,6 @@ main() {
     fi
 
     touch /root/.rnd
-    MONGODB=mongodb-org
     install_docker		                     # needed for bbb-libreoffice-docker
     need_pkg ruby
 
@@ -332,7 +322,7 @@ main() {
   apt-get update
   apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" dist-upgrade
 
-  need_pkg nodejs "$MONGODB" apt-transport-https haveged
+  need_pkg nodejs apt-transport-https haveged
   need_pkg bigbluebutton
   need_pkg bbb-html5
 
