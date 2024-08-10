@@ -309,7 +309,7 @@ main() {
     which node
     which nodejs
 
-    # sudo apt remove nodejs
+    sudo apt remove nodejs
     
 
     # if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
