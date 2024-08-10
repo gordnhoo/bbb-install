@@ -290,21 +290,43 @@ main() {
     need_ppa bigbluebutton-ubuntu-support-focal.list ppa:bigbluebutton/support  2E1B01D0E95B94BC    # Needed for libopusenc0
     need_ppa martin-uni-mainz-ubuntu-coturn-focal.list ppa:martin-uni-mainz/coturn  4B77C2225D3BBDB3 # Coturn
 
-    if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
-      # Node 16 might be installed, previously used in BigBlueButton
-      # Remove the repository config. This will cause the repository to get
-      # re-added using the current nodejs version, and nodejs will be upgraded.
-      sudo rm -r /etc/apt/sources.list.d/nodesource.list
+    # install node
+
+    if command -v nvm &> /dev/null
+    then
+      echo "nvm is already installed."
+    else
+      echo "nvm is not installed."
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+      source ~/.nvm/nvm.sh
     fi
-    if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
-      sudo mkdir -p /etc/apt/keyrings
-      if [ -f /etc/apt/keyrings/nodesource.gpg ]; then
-        rm /etc/apt/keyrings/nodesource.gpg
-      fi
-      curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-      NODE_MAJOR=22
-      echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-    fi
+    nvm install 22
+    nvm use 22
+    nvm alias default 22
+
+    node -v
+    nodejs -v
+    which node
+    which nodejs
+
+    # sudo apt remove nodejs
+    
+
+    # if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
+    #   # Node 16 might be installed, previously used in BigBlueButton
+    #   # Remove the repository config. This will cause the repository to get
+    #   # re-added using the current nodejs version, and nodejs will be upgraded.
+    #   sudo rm -r /etc/apt/sources.list.d/nodesource.list
+    # fi
+    # if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
+    #   sudo mkdir -p /etc/apt/keyrings
+    #   if [ -f /etc/apt/keyrings/nodesource.gpg ]; then
+    #     rm /etc/apt/keyrings/nodesource.gpg
+    #   fi
+    #   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+    #   NODE_MAJOR=22
+    #   echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    # fi
 
     # postgres for BigBlueButton core
     sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
