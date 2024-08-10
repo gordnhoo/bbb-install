@@ -292,50 +292,50 @@ main() {
 
     # install node
 
-    if command -v nvm &> /dev/null
-    then
-      echo "nvm is already installed."
-    else
-      echo "nvm is not installed."
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-      source ~/.nvm/nvm.sh
-    fi
-    nvm install 22
-    nvm use 22
-    nvm alias default 22
+    # if command -v nvm &> /dev/null
+    # then
+    #   echo "nvm is already installed."
+    # else
+    #   echo "nvm is not installed."
+    #   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    #   source ~/.nvm/nvm.sh
+    # fi
+    # nvm install 22
+    # nvm use 22
+    # nvm alias default 22
 
-    node -v
-    nodejs -v
-    which node
-    which nodejs
+    # node -v
+    # nodejs -v
+    # which node
+    # which nodejs
 
-    # sudo apt remove nodejs
-    sudo rm /usr/bin/nodejs
-    sudo rm /usr/local/bin/nodejs
-    sudo ln -s "$(which node)" /usr/local/bin/nodejs
-    node -v
-    nodejs -v
-    which node
-    which nodejs
-    # at this point we still have nodejs 18 if we're upgrading from an earlier 3.0 alpha but it's not in use
-    # 22 is the one in use. We can't just remove nodejs via apt remove because that also removes bbb packages
+    # # sudo apt remove nodejs
+    # sudo rm /usr/bin/nodejs
+    # sudo rm /usr/local/bin/nodejs
+    # sudo ln -s "$(which node)" /usr/local/bin/nodejs
+    # node -v
+    # nodejs -v
+    # which node
+    # which nodejs
+    # # at this point we still have nodejs 18 if we're upgrading from an earlier 3.0 alpha but it's not in use
+    # # 22 is the one in use. We can't just remove nodejs via apt remove because that also removes bbb packages
     
 
-    # if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
-    #   # Node 16 might be installed, previously used in BigBlueButton
-    #   # Remove the repository config. This will cause the repository to get
-    #   # re-added using the current nodejs version, and nodejs will be upgraded.
-    #   sudo rm -r /etc/apt/sources.list.d/nodesource.list
-    # fi
-    # if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
-    #   sudo mkdir -p /etc/apt/keyrings
-    #   if [ -f /etc/apt/keyrings/nodesource.gpg ]; then
-    #     rm /etc/apt/keyrings/nodesource.gpg
-    #   fi
-    #   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-    #   NODE_MAJOR=22
-    #   echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-    # fi
+    if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
+      # Node 18 might be installed, previously used in BigBlueButton
+      # Remove the repository config. This will cause the repository to get
+      # re-added using the current nodejs version, and nodejs will be upgraded.
+      sudo rm -r /etc/apt/sources.list.d/nodesource.list
+    fi
+    if [ ! -f /etc/apt/sources.list.d/nodesource.list ]; then
+      sudo mkdir -p /etc/apt/keyrings
+      if [ -f /etc/apt/keyrings/nodesource.gpg ]; then
+        rm /etc/apt/keyrings/nodesource.gpg
+      fi
+      curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+      NODE_MAJOR=22
+      echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    fi
 
     # postgres for BigBlueButton core
     sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
