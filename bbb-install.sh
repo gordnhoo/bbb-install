@@ -290,37 +290,6 @@ main() {
     need_ppa bigbluebutton-ubuntu-support-focal.list ppa:bigbluebutton/support  2E1B01D0E95B94BC    # Needed for libopusenc0
     need_ppa martin-uni-mainz-ubuntu-coturn-focal.list ppa:martin-uni-mainz/coturn  4B77C2225D3BBDB3 # Coturn
 
-    # install node
-
-    # if command -v nvm &> /dev/null
-    # then
-    #   echo "nvm is already installed."
-    # else
-    #   echo "nvm is not installed."
-    #   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-    #   source ~/.nvm/nvm.sh
-    # fi
-    # nvm install 22
-    # nvm use 22
-    # nvm alias default 22
-
-    # node -v
-    # nodejs -v
-    # which node
-    # which nodejs
-
-    # # sudo apt remove nodejs
-    # sudo rm /usr/bin/nodejs
-    # sudo rm /usr/local/bin/nodejs
-    # sudo ln -s "$(which node)" /usr/local/bin/nodejs
-    # node -v
-    # nodejs -v
-    # which node
-    # which nodejs
-    # # at this point we still have nodejs 18 if we're upgrading from an earlier 3.0 alpha but it's not in use
-    # # 22 is the one in use. We can't just remove nodejs via apt remove because that also removes bbb packages
-    
-
     if [ -f /etc/apt/sources.list.d/nodesource.list ] &&  grep -q 18 /etc/apt/sources.list.d/nodesource.list; then
       # Node 18 might be installed, previously used in BigBlueButton
       # Remove the repository config. This will cause the repository to get
