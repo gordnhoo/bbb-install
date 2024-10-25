@@ -1433,7 +1433,23 @@ install_docker() {
     curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
   fi
-
+  #Adds the proxy to docker  
+  if [ -f /etc/systemd/system/docker.service.d  ]; then
+      rm  -r  /etc/systemd/system/docker.service.d 
+  fi
+  if [ -f /etc/systemd/system/docker.service.d/http-proxy.conf  ]; then
+      rm  -r /etc/systemd/system/docker.service.d/http-proxy.conf  
+  fi
+  mkdir -p /etc/systemd/system/docker.service.d
+  touch /etc/systemd/system/docker.service.d/http-proxy.conf
+  echo '[Service]' > /etc/systemd/system/docker.service.d/http-proxy.conf
+  echo Environment="HTTP_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
+  echo Environment="HTTPS_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
+  systemctl daemon-reload
+  systemctl restart docker
+  docker version > /dev/null || err "docker is failing to restart, something is wrong retry to resolve - exiting"
+  say "docker is running with proxy!"
+  
   # Ensuring docker is running
   if ! docker version > /dev/null ; then
     # Attempting to auto resolve by restarting docker socket and engine.
@@ -1442,22 +1458,6 @@ install_docker() {
 
     docker version > /dev/null || err "docker is failing to restart, something is wrong retry to resolve - exiting"
     say "docker is running!"
-    #Adds the proxy to docker  
-    if [ -f /etc/systemd/system/docker.service.d  ]; then
-        rm  -r  /etc/systemd/system/docker.service.d 
-    fi
-    if [ -f /etc/systemd/system/docker.service.d/http-proxy.conf  ]; then
-        rm  -r /etc/systemd/system/docker.service.d/http-proxy.conf  
-    fi
-    mkdir -p /etc/systemd/system/docker.service.d
-    touch /etc/systemd/system/docker.service.d/http-proxy.conf
-    echo '[Service]' > /etc/systemd/system/docker.service.d/http-proxy.conf
-    echo Environment="HTTP_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
-    echo Environment="HTTPS_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
-    systemctl daemon-reload
-    systemctl restart docker
-    docker version > /dev/null || err "docker is failing to restart, something is wrong retry to resolve - exiting"
-    say "docker is running with proxy!"
   fi
 
 }
