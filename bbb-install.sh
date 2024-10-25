@@ -1442,6 +1442,22 @@ install_docker() {
 
     docker version > /dev/null || err "docker is failing to restart, something is wrong retry to resolve - exiting"
     say "docker is running!"
+    #Adds the proxy to docker  
+    if [ -f /etc/systemd/system/docker.service.d  ]; then
+        rm  -r  /etc/systemd/system/docker.service.d 
+    fi
+    if [ -f /etc/systemd/system/docker.service.d/http-proxy.conf  ]; then
+        rm  -r /etc/systemd/system/docker.service.d/http-proxy.conf  
+    fi
+    mkdir -p /etc/systemd/system/docker.service.d
+    touch /etc/systemd/system/docker.service.d/http-proxy.conf
+    echo '[Service]' > /etc/systemd/system/docker.service.d/http-proxy.conf
+    echo Environment="HTTP_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
+    echo Environment="HTTPS_PROXY="$HTTP_PROXY"" >> /etc/systemd/system/docker.service.d/http-proxy.conf
+    systemctl daemon-reload
+    systemctl restart docker
+    docker version > /dev/null || err "docker is failing to restart, something is wrong retry to resolve - exiting"
+    say "docker is running with proxy!"
   fi
 
 }
