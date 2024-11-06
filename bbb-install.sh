@@ -306,12 +306,6 @@ main() {
       echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
     fi
 
-    # postgres for BigBlueButton core
-    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-    if [ ! -f /etc/apt/trusted.gpg.d/postgresql.gpg ]; then
-      curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-    fi
-
     touch /root/.rnd
     install_docker		                     # needed for bbb-libreoffice-docker
     need_pkg ruby
