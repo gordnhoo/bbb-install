@@ -341,7 +341,6 @@ main() {
       echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
     fi
 
-
     touch /root/.rnd
     install_docker		                     # needed for bbb-libreoffice-docker
     need_pkg ruby
